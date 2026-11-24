@@ -168,6 +168,7 @@ def _unrotate(box, angle: int, size: tuple[int, int]) -> tuple[float, float, flo
 
 
 SMALL = 1280  # px, longest side of the shrunk copy
+UNSURE = 0.8  # confidence below which a reading of one or two characters is dropped
 
 
 def scales(size: tuple[int, int]) -> list[float]:
@@ -204,12 +205,15 @@ def read(image: Image.Image, ocr_langs: list[str], rotations: bool = False, det:
                             parts, score = again
                             break
                 words = [Word(t, _unrotate(box, angle, image.size), score, "ocr") for t, box in parts]
-                if not words:
+                n = sum(ch.isalnum() for w in words for ch in w.text)
+                # One or two characters the reader is unsure of are a logo, an icon or a speck ("电" for a bin icon, "à"
+                # for a dot). If it was real text after all, it shows up as missing from the master text.
+                if not words or (n <= 2 and score < UNSURE):
                     continue
                 # Prefer the pass where the line lies horizontal (its per-word boxes are the reliable ones), and the
                 # full-size reading where both sizes read a line: the shrunk copy drops spaces and first letters.
                 bonus = (0.02 if (line_box[2] - line_box[0]) >= (line_box[3] - line_box[1]) else 0) - (0.15 if scale != 1 else 0)
-                lines.append((score, sum(ch.isalnum() for w in words for ch in w.text), bonus, _unrotate(line_box, angle, image.size), words, (angle, scale, rec)))
+                lines.append((score, n, bonus, _unrotate(line_box, angle, image.size), words, (angle, scale, rec)))
     if curves:
         from . import curved
 

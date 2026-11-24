@@ -141,6 +141,10 @@ class Choice(unittest.TestCase):
         shrunk = [("POCARI", 1.0, small((90, 150, 1200, 450))), ("si", 1.0, small((100, 2000, 400, 2100)))]
         self.assertEqual(self.read((2000, 3000), [full, shrunk]), ["Isi", "POCARI", "SUPPLY"])  # 'D' (a piece of the title) and 'si' are dropped
 
+    def test_unsure_single_characters_are_dropped_as_graphics(self):
+        rows = [("Komposisi", 0.99, (100, 100, 500, 140)), ("à", 0.23, (700, 100, 710, 110)), ("电", 0.7, (700, 300, 740, 340)), ("1", 1.0, (100, 300, 110, 340))]
+        self.assertEqual(self.read((1000, 800), [rows]), ["1", "Komposisi"])
+
     def test_short_line_is_read_in_the_direction_of_the_rest_of_the_page(self):
         upright = [("Karbohidrat", 1.0, (100, 100, 500, 140)), ("0%", 1.0, (600, 100, 660, 140))]
         upside_down = [("900", 1.0, (340, 660, 400, 700))]  # the same spot as "0%", page turned 180°
