@@ -1,0 +1,242 @@
+{
+ "total": {
+  "tokens": 963,
+  "missed": 18,
+  "extra": 13
+ },
+ "accuracy": 0.9678089304257529,
+ "cases": {
+  "latin_clean": {
+   "tokens": 34,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 7.3
+  },
+  "large_title": {
+   "tokens": 5,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 3.9
+  },
+  "numbers_units": {
+   "tokens": 47,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 4.4
+  },
+  "small_print_a4": {
+   "tokens": 88,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 40.8
+  },
+  "colored_backgrounds": {
+   "tokens": 44,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 7.7
+  },
+  "photo_degraded": {
+   "tokens": 55,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 6.7
+  },
+  "rotated_4_ways": {
+   "tokens": 16,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 11.8
+  },
+  "curved_text": {
+   "tokens": 20,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 9.0
+  },
+  "slanted_text": {
+   "tokens": 20,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 16.7
+  },
+  "typefaces": {
+   "tokens": 61,
+   "missed": 1,
+   "extra": 1,
+   "missed_list": [
+    "350"
+   ],
+   "extra_list": [
+    "35o"
+   ],
+   "seconds": 7.5
+  },
+  "effects": {
+   "tokens": 16,
+   "missed": 1,
+   "extra": 1,
+   "missed_list": [
+    "ion"
+   ],
+   "extra_list": [
+    "lon"
+   ],
+   "seconds": 5.4
+  },
+  "bottle_wrap": {
+   "tokens": 34,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 3.5
+  },
+  "vietnamese": {
+   "tokens": 22,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.2
+  },
+  "mixed_id_vi": {
+   "tokens": 43,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 4.5
+  },
+  "arabic": {
+   "tokens": 18,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.2
+  },
+  "thai": {
+   "tokens": 82,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.2
+  },
+  "chinese": {
+   "tokens": 27,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 0.7
+  },
+  "japanese": {
+   "tokens": 35,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 0.9
+  },
+  "vertical_chinese": {
+   "tokens": 15,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 5.1
+  },
+  "mixed_id_en_ar": {
+   "tokens": 31,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 6.2
+  },
+  "real:pocari_botol_350": {
+   "tokens": 74,
+   "missed": 13,
+   "extra": 1,
+   "missed_list": [
+    "dari",
+    "halal",
+    "id00410000205570521",
+    "isotonik",
+    "kalium",
+    "klorida",
+    "klorida",
+    "lebih",
+    "lisensi",
+    "minuman",
+    "pilihan",
+    "sehat"
+   ],
+   "extra_list": [
+    "hala"
+   ],
+   "seconds": 97.4
+  },
+  "real:pocari_sachet_box": {
+   "tokens": 112,
+   "missed": 2,
+   "extra": 4,
+   "missed_list": [
+    "id00410000205570521",
+    "karbonat"
+   ],
+   "extra_list": [
+    "i000410000205570521",
+    "kárbonat",
+    "电",
+    "鱼"
+   ],
+   "seconds": 111.2
+  },
+  "real:pocari_sachet_gizi": {
+   "tokens": 55,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 83.6
+  },
+  "real:soyjoy_bar": {
+   "tokens": 9,
+   "missed": 1,
+   "extra": 6,
+   "missed_list": [
+    "food"
+   ],
+   "extra_list": [
+    "2",
+    "2",
+    "eh",
+    "g",
+    "r",
+    "一"
+   ],
+   "seconds": 78.0
+  }
+ }
+}

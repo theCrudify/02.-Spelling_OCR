@@ -166,7 +166,7 @@ def report(t: dict, out: Path, codes: list[str]) -> None:
     im, kept, thr = t["image"], {id(w) for w in t["words"]}, float(t["cfg"].get("ocr_min_confidence", 0.8))
     origin = Counter(str(o) for w, o in t["born"] if id(w) in kept)
     md = [f"# Jejak OCR: {t['name']}", "", f"Gambar {im.width}×{im.height} px, bahasa label `{','.join(codes)}`, model deteksi `{t['det']}`. Total OCR {t['seconds']:.0f} dtk (CPU).", ""]
-    md += ["![proses](proses.mp4)", "", "Video: [proses.mp4](proses.mp4)", "", "## 1. Artwork", "", "![asli](1-asli.jpg)", "", f"Kata dari text layer: {t['text_layer']} (foto/JPG tidak punya text layer, jadi semua teks dari OCR).", ""]
+    md += ['<video src="proses.mp4" controls width="900"></video>', "", "Video: [proses.mp4](proses.mp4)", "", "## 1. Artwork", "", "![asli](1-asli.jpg)", "", f"Kata dari text layer: {t['text_layer']} (foto/JPG tidak punya text layer, jadi semua teks dari OCR).", ""]
     md += ["## 2. Deteksi dan pembacaan per arah", "", "![arah](2-arah.jpg)", "", "| Arah | Ukuran | Model pengenal | Baris terdeteksi | Baris setelah huruf berjarak digabung | Kata yang akhirnya dipakai | Waktu |", "|---|---|---|---|---|---|---|"]
     md += [f"| {p['angle']}° | {size(p)} | `{p['rec']}` | {p['detected']} | {len(p['lines'])} | {origin.get(str(i), 0)} | {p['seconds']:.0f} dtk |" for i, p in enumerate(t["passes"])]
     md += ["", "## 3. Baris terbaca pada arah 0°, ukuran penuh", "", "![baris](3-baris.jpg)", "", "| # | Teks terbaca | Keyakinan |", "|---|---|---|"]
