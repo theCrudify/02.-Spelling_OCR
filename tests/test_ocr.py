@@ -88,12 +88,29 @@ class Lines(unittest.TestCase):
         def row(text, x, y=0):
             return (text, [text], [(x, y, x + 80, y + 100)], 0.9, (x, y, x + 80, y + 100))
 
-        rows = [row("S", 0), row("O", 110), row("YJ", 220), row("O", 330), row("Y", 440), row("POCARI", 0, 300), row("1", 0, 600), row("2", 110, 600), row("3", 220, 600), row("A", 0, 900), row("B", 110, 900)]
+        rows = [row("S", 0), row("O", 110), row("YJ", 220), row("O", 330), row("Y", 440), row("POCARI", 0, 300), row("1", 0, 600), row("2", 110, 600), row("3", 220, 600), row("A", 0, 900), row("B", 110, 900), row("C", 0, 1200), row("D", 150, 1200), row("E", 300, 1200)]
         got = sorted(r[0] for r in ocr._join_spaced(rows))
-        self.assertEqual(got, sorted(["SOYJOY", "POCARI", "1", "2", "3", "A", "B"]))
+        self.assertEqual(got, sorted(["SOYJOY", "POCARI", "1", "2", "3", "A", "B", "C", "D", "E"])  # C D E: too far apart to be one word)
 
     def test_right_to_left_words_are_boxed_from_the_right(self):
         got = ocr._rtl_words("مشروب متساوي", (0, 0, 120, 30))
         self.assertEqual([t for t, _ in got], ["مشروب", "متساوي"])
         self.assertEqual(got[0][1], (70.0, 0.0, 120.0, 30.0))
         self.assertEqual(got[1][1], (0.0, 0.0, 60.0, 30.0))
+
+
+class Curved(unittest.TestCase):
+    def test_text_on_an_arc_and_under_a_seal_is_read_with_boxes_on_the_arc(self):
+        from bench.cases import arc, font, on_path
+
+        page = Image.new("RGB", (900, 900), "white")
+        top, bottom = "KUALITAS TERJAMIN", "PRODUK HALAL INDONESIA"
+        on_path(page, top, "bold", 44, arc(450, 450, 300, font("bold", 44).getlength(top)))
+        on_path(page, bottom, "bold", 40, arc(450, 450, 340, font("bold", 40).getlength(bottom), top=False))
+        self.assertEqual([w.text for w in ocr.read(page, ["id"], curves=False)], [], "the normal pass is expected to miss arcs")
+        words = {w.text: w for w in ocr.read(page, ["id"])}
+        self.assertEqual(sorted(words), sorted((top + " " + bottom).split()))
+        self.assertLess(words["KUALITAS"].bbox[2], words["TERJAMIN"].bbox[2])  # top arc reads left to right
+        self.assertLess(words["PRODUK"].bbox[0], words["INDONESIA"].bbox[0])  # so does the bottom one
+        self.assertLess(words["TERJAMIN"].bbox[3], 450)  # top arc lies above the centre, bottom arc below it
+        self.assertGreater(words["HALAL"].bbox[1], 450)

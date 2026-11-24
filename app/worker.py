@@ -154,7 +154,7 @@ def process(conn, job):
     page_words = []
     language_findings = []
     for n, p in enumerate(pages, 1):
-        words = ocr.merge(p.words, ocr.read(p.image, ocr_langs, cfg.get("ocr_rotations", True), cfg.get("ocr_detection_model", ocr.DETECTION)))
+        words = ocr.merge(p.words, ocr.read(p.image, ocr_langs, cfg.get("ocr_rotations", True), cfg.get("ocr_detection_model", ocr.DETECTION), cfg.get("ocr_curved_text", True)))
         language_findings += assign_languages(words, codes, known, n, cfg)
         page_words.append([w for line in lines(words) for w in line])
     used = {w.lang for words in page_words for w in words} | set(codes)

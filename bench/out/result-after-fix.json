@@ -1,10 +1,10 @@
 {
  "total": {
-  "tokens": 562,
-  "missed": 0,
-  "extra": 0
+  "tokens": 713,
+  "missed": 3,
+  "extra": 3
  },
- "accuracy": 1.0,
+ "accuracy": 0.9915848527349229,
  "cases": {
   "latin_clean": {
    "tokens": 34,
@@ -12,7 +12,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 7.2
+   "seconds": 7.7
   },
   "large_title": {
    "tokens": 5,
@@ -20,7 +20,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 3.9
+   "seconds": 4.4
   },
   "numbers_units": {
    "tokens": 47,
@@ -28,7 +28,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 4.9
+   "seconds": 4.6
   },
   "small_print_a4": {
    "tokens": 88,
@@ -36,7 +36,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 27.7
+   "seconds": 27.2
   },
   "colored_backgrounds": {
    "tokens": 44,
@@ -44,7 +44,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 7.4
+   "seconds": 7.8
   },
   "photo_degraded": {
    "tokens": 55,
@@ -52,7 +52,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 6.9
+   "seconds": 7.1
   },
   "rotated_4_ways": {
    "tokens": 16,
@@ -60,7 +60,59 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 12.5
+   "seconds": 12.7
+  },
+  "curved_text": {
+   "tokens": 20,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 8.6
+  },
+  "slanted_text": {
+   "tokens": 20,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 17.3
+  },
+  "typefaces": {
+   "tokens": 61,
+   "missed": 1,
+   "extra": 1,
+   "missed_list": [
+    "350"
+   ],
+   "extra_list": [
+    "35o"
+   ],
+   "seconds": 7.6
+  },
+  "effects": {
+   "tokens": 16,
+   "missed": 1,
+   "extra": 1,
+   "missed_list": [
+    "ion"
+   ],
+   "extra_list": [
+    "lon"
+   ],
+   "seconds": 5.2
+  },
+  "bottle_wrap": {
+   "tokens": 34,
+   "missed": 1,
+   "extra": 1,
+   "missed_list": [
+    "isotonic"
+   ],
+   "extra_list": [
+    "sotonic"
+   ],
+   "seconds": 3.4
   },
   "vietnamese": {
    "tokens": 22,
@@ -84,7 +136,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 1.1
+   "seconds": 1.2
   },
   "thai": {
    "tokens": 82,
@@ -100,7 +152,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 0.7
+   "seconds": 0.8
   },
   "japanese": {
    "tokens": 35,
@@ -108,7 +160,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 0.8
+   "seconds": 0.9
   },
   "vertical_chinese": {
    "tokens": 15,
@@ -116,7 +168,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 4.8
+   "seconds": 5.4
   },
   "mixed_id_en_ar": {
    "tokens": 31,
@@ -124,7 +176,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 6.8
+   "seconds": 6.7
   }
  }
 }

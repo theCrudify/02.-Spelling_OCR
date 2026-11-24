@@ -128,7 +128,9 @@ def _group(tokens, boxes) -> list[tuple[str, tuple]]:
 
 def _join_spaced(rows: list[tuple]) -> list[tuple]:
     """Letter-spaced titles ('S O Y J O Y') come back as one short line per letter or pair; three or more of those
-    side by side on one baseline are one word. rows = (text, tokens, boxes, score, line box) of one pass."""
+    side by side on one baseline, closer than 0.6 of their height, are one word (wider apart they are separate
+    letters: "A  B  C"). rows = (text, tokens, boxes, score, line box) of one pass.
+    shortcut: a title tracked wider than that stays loose letters and shows up as findings; decide from the master text if that happens."""
     def fragment(r) -> bool:
         t = r[0].strip()
         return 0 < len(t) <= 2 and t.isalpha() and not CHAR_SCRIPT.search(t)
@@ -140,7 +142,7 @@ def _join_spaced(rows: list[tuple]) -> list[tuple]:
         for r in left[:]:
             a, b = run[-1][4], r[4]
             h = a[3] - a[1]
-            if abs((a[1] + a[3]) - (b[1] + b[3])) < h and 0.6 < (b[3] - b[1]) / h < 1.6 and b[0] - a[2] < h:
+            if abs((a[1] + a[3]) - (b[1] + b[3])) < h and 0.6 < (b[3] - b[1]) / h < 1.6 and b[0] - a[2] < 0.6 * h:
                 run.append(r)
                 left.remove(r)
         if len(run) < 3:
@@ -165,9 +167,10 @@ def _unrotate(box, angle: int, size: tuple[int, int]) -> tuple[float, float, flo
     return (x0, y0, x1, y1)
 
 
-def read(image: Image.Image, ocr_langs: list[str], rotations: bool = False, det: str = DETECTION) -> list[Word]:
+def read(image: Image.Image, ocr_langs: list[str], rotations: bool = False, det: str = DETECTION, curves: bool = True) -> list[Word]:
     """OCR of one page. With `rotations`, the page is also read turned 90/180/270° and the best reading of each
-    text line wins, so sideways and upside-down text is read too (4× the time)."""
+    text line wins, so sideways and upside-down text is read too (4× the time). With `curves`, lines none of those
+    passes read (arcs, seals, waves, bowed lines) are straightened and read: see curved.py."""
     lines: list[tuple[float, tuple, list[Word], tuple]] = []  # (rank, line box, words, pass)
     reread = [TESSERACT[lang] for lang in ocr_langs if lang in TESSERACT]
     for angle in (0, 90, 180, 270) if rotations else (0,):
@@ -194,6 +197,12 @@ def read(image: Image.Image, ocr_langs: list[str], rotations: bool = False, det:
                 n = sum(ch.isalnum() for w in words for ch in w.text)
                 horizontal = (line_box[2] - line_box[0]) >= (line_box[3] - line_box[1])
                 lines.append((score * (1 - 1 / (1 + n)) + (0.02 if horizontal else 0), _unrotate(line_box, angle, image.size), words, (angle, rec)))
+    if curves:
+        from . import curved
+
+        for text, score, line_box, parts, rec in curved.read(np.array(image)[:, :, ::-1], models_for(ocr_langs), det, [l[1] for l in lines]):
+            n = sum(ch.isalnum() for ch in text)
+            lines.append((score * (1 - 1 / (1 + n)), line_box, [Word(t, box, score, "ocr") for t, box in parts], ("curved", rec)))
     kept: list[tuple[float, tuple, list[Word], tuple]] = []
     for line in sorted(lines, key=lambda x: -x[0]):
         # Lines of one pass are all different text; on a skewed photo their upright boxes overlap, so only compare across passes.
