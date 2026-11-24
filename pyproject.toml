@@ -1,0 +1,18 @@
+[project]
+name = "spelling-ocr"
+version = "0.1.0"
+description = "Label text extraction (text layer + local OCR) and checks. Runs fully offline after models are downloaded."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "paddlepaddle>=3.0",
+  "paddleocr>=3.0",
+  "pdfplumber>=0.11",
+  "psd-tools>=1.10",
+  "pillow>=11",
+  "psycopg[binary]>=3.2",
+  "spylls>=0.1.7",
+  "lingua-language-detector>=2.0",
+]
+
+[tool.uv]
+package = false

@@ -1,0 +1,232 @@
+{
+ "total": {
+  "tokens": 519,
+  "missed": 72,
+  "extra": 79
+ },
+ "accuracy": 0.7090558766859345,
+ "cases": {
+  "latin_clean": {
+   "tokens": 34,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 8.0
+  },
+  "large_title": {
+   "tokens": 5,
+   "missed": 1,
+   "extra": 5,
+   "missed_list": [
+    "soyjoy"
+   ],
+   "extra_list": [
+    "o",
+    "o",
+    "s",
+    "y",
+    "yj"
+   ],
+   "seconds": 3.5
+  },
+  "numbers_units": {
+   "tokens": 47,
+   "missed": 4,
+   "extra": 8,
+   "missed_list": [
+    "0,5",
+    "1,5",
+    "27,5",
+    "3,5"
+   ],
+   "extra_list": [
+    "0",
+    "1",
+    "27",
+    "3",
+    "5",
+    "5",
+    "5",
+    "5"
+   ],
+   "seconds": 4.6
+  },
+  "small_print_a4": {
+   "tokens": 88,
+   "missed": 1,
+   "extra": 2,
+   "missed_list": [
+    "27,5"
+   ],
+   "extra_list": [
+    "27",
+    "5"
+   ],
+   "seconds": 27.9
+  },
+  "colored_backgrounds": {
+   "tokens": 44,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 7.0
+  },
+  "photo_degraded": {
+   "tokens": 55,
+   "missed": 21,
+   "extra": 0,
+   "missed_list": [
+    "0",
+    "0",
+    "120",
+    "16",
+    "245",
+    "27,5",
+    "30",
+    "energi",
+    "g",
+    "g",
+    "g",
+    "g"
+   ],
+   "extra_list": [],
+   "seconds": 6.6
+  },
+  "rotated_4_ways": {
+   "tokens": 16,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 12.3
+  },
+  "vietnamese": {
+   "tokens": 22,
+   "missed": 19,
+   "extra": 38,
+   "missed_list": [
+    "bù",
+    "bảo",
+    "bổ",
+    "chất",
+    "cơ",
+    "giúp",
+    "giải",
+    "khô",
+    "mát",
+    "nơi",
+    "nước",
+    "nước"
+   ],
+   "extra_list": [
+    "b",
+    "b",
+    "bo",
+    "c",
+    "c",
+    "c",
+    "cht",
+    "gi",
+    "gii",
+    "i",
+    "in",
+    "kh"
+   ],
+   "seconds": 0.9
+  },
+  "arabic": {
+   "tokens": 18,
+   "missed": 18,
+   "extra": 18,
+   "missed_list": [
+    "أشعة",
+    "التوتر",
+    "الجسم",
+    "الشمس",
+    "المباشرة",
+    "المفقودة",
+    "بارد",
+    "بعيدا",
+    "سوائل",
+    "عن",
+    "في",
+    "لتعويض"
+   ],
+   "extra_list": [
+    "اديعب",
+    "بورشم",
+    "ةدوقفملا",
+    "ةرشابملا",
+    "ةعشأ",
+    "حالمألاو",
+    "دراب",
+    "رتوتلا",
+    "سمشلا",
+    "ضيوعتل",
+    "ظفحي",
+    "فاجو"
+   ],
+   "seconds": 1.1
+  },
+  "thai": {
+   "tokens": 82,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.2
+  },
+  "chinese": {
+   "tokens": 27,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 0.7
+  },
+  "japanese": {
+   "tokens": 35,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 0.8
+  },
+  "vertical_chinese": {
+   "tokens": 15,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 4.7
+  },
+  "mixed_id_en_ar": {
+   "tokens": 31,
+   "missed": 8,
+   "extra": 8,
+   "missed_list": [
+    "التوتر",
+    "الجسم",
+    "المفقودة",
+    "سوائل",
+    "لتعويض",
+    "متساوي",
+    "مشروب",
+    "والأملاح"
+   ],
+   "extra_list": [
+    "بورشم",
+    "ةدوقفملا",
+    "حالمألاو",
+    "رتوتلا",
+    "ضيوعتل",
+    "لئاوس",
+    "مسجلا",
+    "يواستم"
+   ],
+   "seconds": 6.3
+  }
+ }
+}
