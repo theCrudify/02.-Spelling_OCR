@@ -59,9 +59,12 @@ def _pdf(path: str, dpi: int) -> list[Page]:
     with pdfplumber.open(path) as doc:
         for p in doc.pages:
             image = p.to_image(resolution=dpi).original.convert("RGB")
+            # Only level text is taken from the text layer: sideways text and text on a curve come out of the PDF as
+            # loose letters ("k", "eri", "ej"), so those are left to OCR, which reads them from the rendered page.
+            level = p.filter(lambda o: o.get("object_type") != "char" or abs(o["matrix"][1]) < 0.01 * max(abs(o["matrix"][0]), abs(o["matrix"][1])))
             words = [
                 Word(w["text"], (w["x0"] * scale, w["top"] * scale, w["x1"] * scale, w["bottom"] * scale), 1.0, "text_layer")
-                for w in p.extract_words(use_text_flow=True)
+                for w in level.extract_words(use_text_flow=True)
                 if w["text"].strip()
             ]
             pages.append(Page(image, words))

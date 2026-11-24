@@ -180,7 +180,7 @@ def report(t: dict, out: Path, codes: list[str]) -> None:
     md += ["", "## 5. Pemilihan bacaan terbaik", "", "![pilih](5-pilih.jpg)", "", f"{len(t['born'])} kata dihasilkan semua arah; {len(kept)} dipakai (hijau), sisanya bacaan ganda atau salah arah (merah). Dari jalur melengkung: {origin.get('curved', 0)} kata.", ""]
     md += ["## 6. Bahasa per baris", "", "![bahasa](6-bahasa.jpg)", "", "| Bahasa | Kata |", "|---|---|"] + [f"| {l} | {n} |" for l, n in Counter(w.lang for w in t["words"]).items()]
     md += ["", "Teks akhir (urutan baca):", "", "```", *textwrap.wrap(" ".join(w.text for w in t["words"]), 110), "```", ""]
-    md += ["## 7. Temuan", "", "![temuan](7-temuan.jpg)", "", f"Teks master: {'salinan manual teks pada foto (`bench/real/' + t['name'] + '.txt`)' if t['master'] else 'tidak ada'}.", "", "| # | Jenis | Tingkat | Ditemukan | Seharusnya | Pesan |", "|---|---|---|---|---|---|"]
+    md += ["## 7. Temuan", "", "![temuan](7-temuan.jpg)", "", f"Teks master: {'file .txt di samping artwork' if t['master'] else 'tidak ada'}.", "", "| # | Jenis | Tingkat | Ditemukan | Seharusnya | Pesan |", "|---|---|---|---|---|---|"]
     numbered = iter(range(1, 10**6))
     md += [f"| {next(numbered) if f.bbox else '–'} | {f.check_type} | {f.severity} | {(f.found or '')[:40]} | {(f.expected or '')[:40]} | {f.message[:140].replace('|', '¦')} |" for f in t["findings"]]
     (out / "hasil.md").write_text("\n".join(md) + "\n", encoding="utf-8")

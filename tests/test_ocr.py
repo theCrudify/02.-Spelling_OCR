@@ -1,6 +1,7 @@
 """Real OCR + language detection (needs the downloaded models, ~20 s):  uv run python -m unittest tests.test_ocr"""
 
 import unittest
+from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -144,3 +145,18 @@ class Choice(unittest.TestCase):
         upright = [("Karbohidrat", 1.0, (100, 100, 500, 140)), ("0%", 1.0, (600, 100, 660, 140))]
         upside_down = [("900", 1.0, (340, 660, 400, 700))]  # the same spot as "0%", page turned 180°
         self.assertEqual(self.read((1000, 800), [upright, [], upside_down, []], rotations=True), ["0%", "Karbohidrat"])
+
+
+class TextLayer(unittest.TestCase):
+    ARTWORK = Path(__file__).resolve().parents[2] / "docs/ocr/artwork/label-v2.ai"  # written by bench/artwork.py
+
+    @unittest.skipUnless(ARTWORK.exists(), "run: python -m bench.artwork ../docs/ocr/artwork")
+    def test_sideways_and_curved_text_is_not_taken_from_the_text_layer_as_loose_letters(self):
+        from app import checks, ingest
+
+        page = ingest.load(str(self.ARTWORK), 100)[0]
+        texts = [w.text for w in page.words]
+        master = {checks.norm(t) for t in checks.tokens(self.ARTWORK.with_suffix(".txt").read_text(encoding="utf-8"))}
+        self.assertIn("Komposisi:", texts)
+        self.assertEqual([t for w in texts for t in checks.tokens(w) if checks.norm(t) not in master], [])  # no "k", "eri", "ej"
+        self.assertNotIn("PILIHAN", texts)  # the arc is left to OCR
