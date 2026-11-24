@@ -90,7 +90,7 @@ class Lines(unittest.TestCase):
 
         rows = [row("S", 0), row("O", 110), row("YJ", 220), row("O", 330), row("Y", 440), row("POCARI", 0, 300), row("1", 0, 600), row("2", 110, 600), row("3", 220, 600), row("A", 0, 900), row("B", 110, 900), row("C", 0, 1200), row("D", 150, 1200), row("E", 300, 1200)]
         got = sorted(r[0] for r in ocr._join_spaced(rows))
-        self.assertEqual(got, sorted(["SOYJOY", "POCARI", "1", "2", "3", "A", "B", "C", "D", "E"])  # C D E: too far apart to be one word)
+        self.assertEqual(got, sorted(["SOYJOY", "POCARI", "1", "2", "3", "A", "B", "C", "D", "E"]))  # C D E: too far apart to be one word
 
     def test_right_to_left_words_are_boxed_from_the_right(self):
         got = ocr._rtl_words("مشروب متساوي", (0, 0, 120, 30))
