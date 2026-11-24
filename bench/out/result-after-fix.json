@@ -1,0 +1,144 @@
+{
+ "total": {
+  "tokens": 519,
+  "missed": 10,
+  "extra": 10
+ },
+ "accuracy": 0.9614643545279383,
+ "cases": {
+  "latin_clean": {
+   "tokens": 34,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 6.5
+  },
+  "large_title": {
+   "tokens": 5,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 3.4
+  },
+  "numbers_units": {
+   "tokens": 47,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 4.3
+  },
+  "small_print_a4": {
+   "tokens": 88,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 25.3
+  },
+  "colored_backgrounds": {
+   "tokens": 44,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 6.7
+  },
+  "photo_degraded": {
+   "tokens": 55,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 6.5
+  },
+  "rotated_4_ways": {
+   "tokens": 16,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 12.5
+  },
+  "vietnamese": {
+   "tokens": 22,
+   "missed": 10,
+   "extra": 10,
+   "missed_list": [
+    "bảo",
+    "bổ",
+    "chất",
+    "giải",
+    "nước",
+    "nước",
+    "quản",
+    "thể",
+    "uống",
+    "điện"
+   ],
+   "extra_list": [
+    "b",
+    "bo",
+    "cht",
+    "gii",
+    "nưc",
+    "nưc",
+    "qun",
+    "th",
+    "ung",
+    "đin"
+   ],
+   "seconds": 1.0
+  },
+  "arabic": {
+   "tokens": 18,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.2
+  },
+  "thai": {
+   "tokens": 82,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.4
+  },
+  "chinese": {
+   "tokens": 27,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 0.8
+  },
+  "japanese": {
+   "tokens": 35,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.2
+  },
+  "vertical_chinese": {
+   "tokens": 15,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 4.4
+  },
+  "mixed_id_en_ar": {
+   "tokens": 31,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 6.1
+  }
+ }
+}

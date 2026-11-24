@@ -63,6 +63,32 @@ def _group(tokens, boxes) -> list[tuple[str, tuple]]:
     return [(t, b) for t, b in out if any(ch.isalnum() for ch in t)]
 
 
+def _join_spaced(rows: list[tuple]) -> list[tuple]:
+    """Letter-spaced titles ('S O Y J O Y') come back as one short line per letter or pair; three or more of those
+    side by side on one baseline are one word. rows = (text, tokens, boxes, score, line box) of one pass."""
+    def fragment(r) -> bool:
+        t = r[0].strip()
+        return 0 < len(t) <= 2 and t.isalpha() and not CHAR_SCRIPT.search(t)
+
+    out = [r for r in rows if not fragment(r)]
+    left = sorted((r for r in rows if fragment(r)), key=lambda r: r[4][0])
+    while left:
+        run = [left.pop(0)]
+        for r in left[:]:
+            a, b = run[-1][4], r[4]
+            h = a[3] - a[1]
+            if abs((a[1] + a[3]) - (b[1] + b[3])) < h and 0.6 < (b[3] - b[1]) / h < 1.6 and b[0] - a[2] < h:
+                run.append(r)
+                left.remove(r)
+        if len(run) < 3:
+            out += run
+            continue
+        text = "".join(r[0].strip() for r in run)
+        box = (min(r[4][0] for r in run), min(r[4][1] for r in run), max(r[4][2] for r in run), max(r[4][3] for r in run))
+        out.append((text, [text], [box], min(r[3] for r in run), box))
+    return out
+
+
 def _unrotate(box, angle: int, size: tuple[int, int]) -> tuple[float, float, float, float]:
     """Box in an image rotated `angle`° counter-clockwise (PIL rotate, expand=True) -> box in the original image."""
     w, h = size
@@ -84,7 +110,7 @@ def read(image: Image.Image, ocr_langs: list[str], rotations: bool = False, det:
         bgr = np.array(image.rotate(angle, expand=True) if angle else image)[:, :, ::-1]
         for rec in models_for(ocr_langs):
             r = engine(rec, det).predict(bgr, return_word_box=True)[0]
-            for text, tokens, boxes, score, line_box in zip(r["rec_texts"], r["text_word"], r["text_word_boxes"], r["rec_scores"], r["rec_boxes"]):
+            for text, tokens, boxes, score, line_box in _join_spaced(list(zip(r["rec_texts"], r["text_word"], r["text_word_boxes"], r["rec_scores"], r["rec_boxes"]))):
                 # shortcut: a right-to-left line is one Word with the line box (PaddleOCR's per-word text is in visual,
                 # i.e. reversed, order there); split it per word when findings on Arabic need word-level boxes.
                 parts = [(text.strip(), line_box)] if RTL.search(text) else _group(tokens, boxes)
