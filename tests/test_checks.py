@@ -38,6 +38,10 @@ class MasterDiff(unittest.TestCase):
         page = words("Isi bersih 500 ml.", y=0) + words("Minuman isotonik pengganti elektrolit. Kocok sebelum diminum.", y=50)
         self.assertEqual(checks.master_diff([page], MASTER), [])
 
+    def test_line_detected_as_another_language_still_matches_the_master(self):
+        page = words("Minuman isotonik pengganti elektrolit. Kocok sebelum diminum.") + words("Isi bersih 500 ml. Imported", lang="en", y=50)
+        self.assertEqual(checks.master_diff([page], MASTER), [])  # 'Imported' (no English master) is left to the spelling check
+
     def test_char_scripts_compare_per_character(self):
         self.assertEqual(checks.tokens("净含量500ml"), ["净", "含", "量", "500ml"])
 

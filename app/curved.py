@@ -48,8 +48,9 @@ def _smooth(v: np.ndarray, k: int) -> np.ndarray:
     return np.convolve(np.pad(v, k // 2, mode="edge"), np.ones(k) / k, mode="valid")
 
 
-def columns(bgr: np.ndarray, poly: np.ndarray):
-    """-> (strip, box(a, b)): box maps strip columns a..b back to a page box. None when the line doubles back."""
+def columns(bgr: np.ndarray, poly: np.ndarray, others: list[tuple] = ()):
+    """-> (strip, box(a, b)): box maps strip columns a..b back to a page box. None when the line doubles back.
+    `others` = boxes of the other text on the page: the strip is widened a little at each end where none is next to it."""
     x0, y0, x1, y1 = (int(v) for v in (*poly.min(0), *poly.max(0)))
     mask = np.zeros((y1 - y0 + 1, x1 - x0 + 1), np.uint8)
     cv2.fillPoly(mask, [(poly - (x0, y0)).astype(np.int32)], 1)
@@ -64,16 +65,25 @@ def columns(bgr: np.ndarray, poly: np.ndarray):
         return None
     xs = np.flatnonzero(filled)
     centre = np.interp(np.arange(mask.shape[1]), xs, ((top + bottom) / 2)[xs])
+    # The outline is often tight on the first and last letter, and the reader then drops them ("omposisi").
+    pad = int(h / 2)
     centre = _smooth(centre, int(h)) + y0
+
+    def free(x: float, y: float, side: int) -> bool:
+        """No other text lies beyond this end of the line (lines above and below start at about the same x: they do not count)."""
+        return not any(b[0] < x + pad and b[2] > x - pad and b[1] < y + h / 2 and b[3] > y - h / 2 and ((b[0] + b[2]) / 2 - x) * side > 0 for b in others)
+
+    left, right = pad * free(x0, centre[0], -1), pad * free(x1, centre[-1], 1)
+    centre = np.pad(centre, (left, right), mode="edge")
     H = int(h * 1.15) + 2
-    map_x = np.tile(np.arange(x0, x1 + 1, dtype=np.float32), (H, 1))
+    map_x = np.tile(np.arange(x0 - left, x1 + right + 1, dtype=np.float32), (H, 1))
     map_y = (centre[None, :] + (np.arange(H)[:, None] - (H - 1) / 2)).astype(np.float32)
     strip = cv2.remap(bgr, map_x, map_y, cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
 
     def box(a: float, b: float):
         a, b = int(max(0, a)), int(min(len(centre) - 1, max(a + 1, b)))
         c = centre[a : b + 1]
-        return (float(x0 + a), float(c.min() - H / 2), float(x0 + b), float(c.max() + H / 2))
+        return (float(x0 - left + a), float(c.min() - H / 2), float(x0 - left + b), float(c.max() + H / 2))
 
     return strip, box
 
@@ -123,15 +133,16 @@ def ring(bgr: np.ndarray, poly: np.ndarray, tops_outward: bool):
 def read(bgr: np.ndarray, recs: list[str], det: str, already: list[tuple]) -> list[tuple[str, float, tuple, list[tuple[str, tuple]], str]]:
     """Lines the normal pass did not read (`already` = the line boxes it did) -> [(text, score, line box, [(word, box)], recognition model)]."""
     out = []
-    for poly in detector(det).predict(bgr)[0]["dt_polys"]:
-        poly = np.asarray(poly, dtype=np.float32)
+    polys = [np.asarray(p, dtype=np.float32) for p in detector(det).predict(bgr)[0]["dt_polys"]]
+    for poly in polys:
+        others = list(already) + [(*p.min(0), *p.max(0)) for p in polys if p is not poly]
         x0, y0, x1, y1 = (float(v) for v in (*poly.min(0), *poly.max(0)))
         area = (x1 - x0) * (y1 - y0)
         if len(poly) < 4 or min(x1 - x0, y1 - y0) < 10:
             continue
         if any(max(0.0, min(x1, k[2]) - max(x0, k[0])) * max(0.0, min(y1, k[3]) - max(y0, k[1])) >= 0.5 * area for k in already):
             continue
-        strips = [s for s in (columns(bgr, poly), ring(bgr, poly, True), ring(bgr, poly, False)) if s]
+        strips = [s for s in (columns(bgr, poly, others), ring(bgr, poly, True), ring(bgr, poly, False)) if s]
         best = None
         for strip, box in strips:
             for rec in recs:

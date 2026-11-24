@@ -167,18 +167,32 @@ def _unrotate(box, angle: int, size: tuple[int, int]) -> tuple[float, float, flo
     return (x0, y0, x1, y1)
 
 
+SMALL = 1280  # px, longest side of the shrunk copy
+
+
+def scales(size: tuple[int, int]) -> list[float]:
+    """The models are blind to very large letters (a brand name 200 px tall comes back as nothing, or as loose
+    letters), so a large page is also read from a shrunk copy; small print is only legible at full size."""
+    return [1.0] + ([SMALL / max(size)] if max(size) > 1.5 * SMALL else [])
+
+
 def read(image: Image.Image, ocr_langs: list[str], rotations: bool = False, det: str = DETECTION, curves: bool = True) -> list[Word]:
     """OCR of one page. With `rotations`, the page is also read turned 90/180/270° and the best reading of each
-    text line wins, so sideways and upside-down text is read too (4× the time). With `curves`, lines none of those
-    passes read (arcs, seals, waves, bowed lines) are straightened and read: see curved.py."""
-    lines: list[tuple[float, tuple, list[Word], tuple]] = []  # (rank, line box, words, pass)
+    text line wins, so sideways and upside-down text is read too (4× the time). A large page is read at two sizes
+    (see scales). With `curves`, lines none of those passes read (arcs, seals, waves, bowed lines) are straightened
+    and read: see curved.py."""
+    lines: list[tuple] = []  # (score, letters, bonus, line box, words, pass = (angle, scale, model))
     reread = [TESSERACT[lang] for lang in ocr_langs if lang in TESSERACT]
     for angle in (0, 90, 180, 270) if rotations else (0,):
         turned = image.rotate(angle, expand=True) if angle else image
-        bgr = np.array(turned)[:, :, ::-1]
-        for rec in models_for(ocr_langs):
-            r = engine(rec, det).predict(bgr, return_word_box=True)[0]
-            for text, tokens, boxes, score, line_box in _join_spaced(list(zip(r["rec_texts"], r["text_word"], r["text_word_boxes"], r["rec_scores"], r["rec_boxes"]))):
+        for scale, rec in ((s, m) for s in scales(image.size) for m in models_for(ocr_langs)):
+            view = turned if scale == 1 else turned.resize((round(turned.width * scale), round(turned.height * scale)), Image.LANCZOS)
+            r = engine(rec, det).predict(np.array(view)[:, :, ::-1], return_word_box=True)[0]
+            rows = [  # boxes back in full-size pixels
+                (text, tokens, [[v / scale for v in b] for b in boxes], score, [v / scale for v in line_box])
+                for text, tokens, boxes, score, line_box in zip(r["rec_texts"], r["text_word"], r["text_word_boxes"], r["rec_scores"], r["rec_boxes"])
+            ]
+            for text, tokens, boxes, score, line_box in _join_spaced(rows):
                 score = float(score)
                 if RTL.search(text):
                     parts = _rtl_words(text, line_box)
@@ -192,23 +206,44 @@ def read(image: Image.Image, ocr_langs: list[str], rotations: bool = False, det:
                 words = [Word(t, _unrotate(box, angle, image.size), score, "ocr") for t, box in parts]
                 if not words:
                     continue
-                # A wrong-way reading is short garbage with a deceptively high score ("ocu" 0.98), so weigh by length.
-                # Prefer the pass where the line lies horizontal: its per-word boxes are the reliable ones.
-                n = sum(ch.isalnum() for w in words for ch in w.text)
-                horizontal = (line_box[2] - line_box[0]) >= (line_box[3] - line_box[1])
-                lines.append((score * (1 - 1 / (1 + n)) + (0.02 if horizontal else 0), _unrotate(line_box, angle, image.size), words, (angle, rec)))
+                # Prefer the pass where the line lies horizontal (its per-word boxes are the reliable ones), and the
+                # full-size reading where both sizes read a line: the shrunk copy drops spaces and first letters.
+                bonus = (0.02 if (line_box[2] - line_box[0]) >= (line_box[3] - line_box[1]) else 0) - (0.15 if scale != 1 else 0)
+                lines.append((score, sum(ch.isalnum() for w in words for ch in w.text), bonus, _unrotate(line_box, angle, image.size), words, (angle, scale, rec)))
     if curves:
         from . import curved
 
-        for text, score, line_box, parts, rec in curved.read(np.array(image)[:, :, ::-1], models_for(ocr_langs), det, [l[1] for l in lines]):
-            n = sum(ch.isalnum() for ch in text)
-            lines.append((score * (1 - 1 / (1 + n)), line_box, [Word(t, box, score, "ocr") for t, box in parts], ("curved", rec)))
-    kept: list[tuple[float, tuple, list[Word], tuple]] = []
-    for line in sorted(lines, key=lambda x: -x[0]):
+        for text, score, line_box, parts, rec in curved.read(np.array(image)[:, :, ::-1], models_for(ocr_langs), det, [l[3] for l in lines]):
+            lines.append((score, sum(ch.isalnum() for ch in text), 0, line_box, [Word(t, box, score, "ocr") for t, box in parts], ("curved", 1.0, rec)))
+
+    # The direction most of the page reads in. Very short lines ("0%") read just as confidently upside down ("900"),
+    # so in that direction they count as a little longer.
+    amount: dict = {}
+    for score, n, _, _, _, key in lines:
+        amount[key[0]] = amount.get(key[0], 0) + score * n
+    main = max(amount, key=amount.get, default=0)
+
+    def rank(line) -> float:
+        # A wrong-way reading is short garbage with a deceptively high score ("ocu" 0.98), so weigh by length.
+        score, n, bonus, _, _, key = line
+        return score * (1 - 1 / (1 + n + (2 if key[0] == main else 0))) + bonus
+
+    def thick(box) -> float:
+        return min(box[2] - box[0], box[3] - box[1])
+
+    def same(line, k) -> bool:
+        """Is `line` another reading of the already kept line `k`?"""
         # Lines of one pass are all different text; on a skewed photo their upright boxes overlap, so only compare across passes.
-        if all(line[3] == k[3] or _overlap(line[1], k[1]) < 0.5 for k in kept):
+        if line[5] == k[5] or _overlap(line[3], k[3]) < 0.5:
+            return False
+        # A title in huge letters is legible only in the shrunk copy, and its box swallows the small print next to it.
+        return not (line[5][0] == k[5][0] and line[5][1] != k[5][1] and thick(line[3]) > 2 * thick(k[3]))
+
+    kept: list[tuple] = []
+    for line in sorted(lines, key=rank, reverse=True):
+        if not any(same(line, k) for k in kept):
             kept.append(line)
-    return [w for _, _, words, _ in kept for w in words]
+    return [w for line in kept for w in line[4]]
 
 
 def _overlap(a, b) -> float:

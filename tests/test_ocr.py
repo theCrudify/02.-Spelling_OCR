@@ -114,3 +114,33 @@ class Curved(unittest.TestCase):
         self.assertLess(words["PRODUK"].bbox[0], words["INDONESIA"].bbox[0])  # so does the bottom one
         self.assertLess(words["TERJAMIN"].bbox[3], 450)  # top arc lies above the centre, bottom arc below it
         self.assertGreater(words["HALAL"].bbox[1], 450)
+
+
+class Choice(unittest.TestCase):
+    """Which reading of a line wins (the engine is faked: one list of (text, score, box) per pass, in pass order)."""
+
+    def read(self, size, passes, **kw):
+        calls = iter(passes)
+
+        class Fake:
+            def predict(self, bgr, return_word_box):
+                rows = next(calls)
+                return [{"rec_texts": [r[0] for r in rows], "text_word": [[r[0]] for r in rows], "text_word_boxes": [[r[2]] for r in rows], "rec_scores": [r[1] for r in rows], "rec_boxes": [r[2] for r in rows]}]
+
+        real, ocr.engine = ocr.engine, lambda rec, det: Fake()
+        try:
+            return sorted(w.text for w in ocr.read(Image.new("RGB", size), ["id"], curves=False, **kw))
+        finally:
+            ocr.engine = real
+
+    def test_huge_title_is_taken_from_the_shrunk_copy_and_keeps_the_small_print_beside_it(self):
+        s = ocr.scales((2000, 3000))[1]
+        small = lambda b: tuple(v * s for v in b)
+        full = [("SUPPLY", 1.0, (100, 100, 700, 200)), ("D", 0.6, (300, 300, 340, 350)), ("Isi", 0.9, (100, 2000, 400, 2100))]
+        shrunk = [("POCARI", 1.0, small((90, 150, 1200, 450))), ("si", 1.0, small((100, 2000, 400, 2100)))]
+        self.assertEqual(self.read((2000, 3000), [full, shrunk]), ["Isi", "POCARI", "SUPPLY"])  # 'D' (a piece of the title) and 'si' are dropped
+
+    def test_short_line_is_read_in_the_direction_of_the_rest_of_the_page(self):
+        upright = [("Karbohidrat", 1.0, (100, 100, 500, 140)), ("0%", 1.0, (600, 100, 660, 140))]
+        upside_down = [("900", 1.0, (340, 660, 400, 700))]  # the same spot as "0%", page turned 180°
+        self.assertEqual(self.read((1000, 800), [upright, [], upside_down, []], rotations=True), ["0%", "Karbohidrat"])

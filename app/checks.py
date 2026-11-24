@@ -46,13 +46,17 @@ def master_diff(pages: list[list[Word]], masters: dict[str, str], similarity: fl
     shortcut: a word-order swap inside a sentence is not detected; add a sequence diff per text block if that is needed."""
     if not masters:
         return []
+    master_seq = [(norm(t), t) for text in masters.values() for t in tokens(text)]
+    in_master = {n for n, _ in master_seq}
     occurrences: dict[str, list[tuple[Word, int]]] = {}
     for page_no, words in enumerate(pages, 1):
         for w in words:
-            if w.lang is None or w.lang in masters:  # text in a language without master copy is checked by spelling only
-                for t in tokens(w.text):
+            for t in tokens(w.text):
+                # Text in a language without master copy is checked by spelling only, except words the master does
+                # contain: an English line on an Indonesian label ("Otsuka Pharmaceutical Co., Ltd., Japan") is
+                # detected as English, yet it is in the Indonesian master and must not be reported missing.
+                if w.lang is None or w.lang in masters or norm(t) in in_master:
                     occurrences.setdefault(norm(t), []).append((w, page_no))
-    master_seq = [(norm(t), t) for text in masters.values() for t in tokens(text)]
     label_count = Counter({k: len(v) for k, v in occurrences.items()})
     master_count = Counter(n for n, _ in master_seq)
     extra = label_count - master_count

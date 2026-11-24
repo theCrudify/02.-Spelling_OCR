@@ -1,0 +1,249 @@
+{
+ "total": {
+  "tokens": 963,
+  "missed": 22,
+  "extra": 17
+ },
+ "accuracy": 0.9595015576323987,
+ "cases": {
+  "latin_clean": {
+   "tokens": 34,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 7.8
+  },
+  "large_title": {
+   "tokens": 5,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 3.8
+  },
+  "numbers_units": {
+   "tokens": 47,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 4.4
+  },
+  "small_print_a4": {
+   "tokens": 88,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 41.8
+  },
+  "colored_backgrounds": {
+   "tokens": 44,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 7.2
+  },
+  "photo_degraded": {
+   "tokens": 55,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 7.1
+  },
+  "rotated_4_ways": {
+   "tokens": 16,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 12.1
+  },
+  "curved_text": {
+   "tokens": 20,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 8.1
+  },
+  "slanted_text": {
+   "tokens": 20,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 16.6
+  },
+  "typefaces": {
+   "tokens": 61,
+   "missed": 1,
+   "extra": 1,
+   "missed_list": [
+    "350"
+   ],
+   "extra_list": [
+    "35o"
+   ],
+   "seconds": 7.3
+  },
+  "effects": {
+   "tokens": 16,
+   "missed": 1,
+   "extra": 1,
+   "missed_list": [
+    "ion"
+   ],
+   "extra_list": [
+    "lon"
+   ],
+   "seconds": 5.1
+  },
+  "bottle_wrap": {
+   "tokens": 34,
+   "missed": 1,
+   "extra": 1,
+   "missed_list": [
+    "isotonic"
+   ],
+   "extra_list": [
+    "sotonic"
+   ],
+   "seconds": 3.3
+  },
+  "vietnamese": {
+   "tokens": 22,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.4
+  },
+  "mixed_id_vi": {
+   "tokens": 43,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 4.4
+  },
+  "arabic": {
+   "tokens": 18,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.2
+  },
+  "thai": {
+   "tokens": 82,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.2
+  },
+  "chinese": {
+   "tokens": 27,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 0.7
+  },
+  "japanese": {
+   "tokens": 35,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 0.8
+  },
+  "vertical_chinese": {
+   "tokens": 15,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 5.0
+  },
+  "mixed_id_en_ar": {
+   "tokens": 31,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 6.4
+  },
+  "real:pocari_botol_350": {
+   "tokens": 74,
+   "missed": 16,
+   "extra": 4,
+   "missed_list": [
+    "dari",
+    "halal",
+    "id00410000205570521",
+    "isotonik",
+    "kalium",
+    "karbonat",
+    "klorida",
+    "klorida",
+    "komposisi",
+    "lebih",
+    "lisensi",
+    "minuman"
+   ],
+   "extra_list": [
+    "anpa",
+    "arbonat",
+    "hala",
+    "omposisi"
+   ],
+   "seconds": 100.1
+  },
+  "real:pocari_sachet_box": {
+   "tokens": 112,
+   "missed": 2,
+   "extra": 4,
+   "missed_list": [
+    "id00410000205570521",
+    "karbonat"
+   ],
+   "extra_list": [
+    "i000410000205570521",
+    "kárbonat",
+    "电",
+    "鱼"
+   ],
+   "seconds": 114.1
+  },
+  "real:pocari_sachet_gizi": {
+   "tokens": 55,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 80.6
+  },
+  "real:soyjoy_bar": {
+   "tokens": 9,
+   "missed": 1,
+   "extra": 6,
+   "missed_list": [
+    "food"
+   ],
+   "extra_list": [
+    "2",
+    "2",
+    "eh",
+    "g",
+    "r",
+    "一"
+   ],
+   "seconds": 73.7
+  }
+ }
+}
