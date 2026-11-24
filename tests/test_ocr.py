@@ -68,3 +68,32 @@ class Languages(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Lines(unittest.TestCase):
+    """How PaddleOCR's raw lines become words (no model needed)."""
+
+    def test_words_end_only_at_whitespace(self):
+        tokens = ["Gula", " ", "27", ",", "5", " ", "gi", "ú", "p", " đ", "in", ", ", "mg", "/", "100"]
+        boxes = [(i * 10, 0, i * 10 + 9, 20) for i in range(len(tokens))]
+        got = ocr._group(tokens, boxes)
+        self.assertEqual([t for t, _ in got], ["Gula", "27,5", "giúp", "đin,", "mg/100"])
+        self.assertEqual(got[1][1], (20, 0, 49, 20))  # box spans the glued pieces
+
+    def test_cjk_and_thai_stay_one_token_per_character(self):
+        got = ocr._group(["饮", "料", "500", "ml"], [(i * 10, 0, i * 10 + 9, 20) for i in range(4)])
+        self.assertEqual([t for t, _ in got], ["饮", "料", "500ml"])
+
+    def test_letter_spaced_title_is_one_word_but_numbers_are_not(self):
+        def row(text, x, y=0):
+            return (text, [text], [(x, y, x + 80, y + 100)], 0.9, (x, y, x + 80, y + 100))
+
+        rows = [row("S", 0), row("O", 110), row("YJ", 220), row("O", 330), row("Y", 440), row("POCARI", 0, 300), row("1", 0, 600), row("2", 110, 600), row("3", 220, 600), row("A", 0, 900), row("B", 110, 900)]
+        got = sorted(r[0] for r in ocr._join_spaced(rows))
+        self.assertEqual(got, sorted(["SOYJOY", "POCARI", "1", "2", "3", "A", "B"]))
+
+    def test_right_to_left_words_are_boxed_from_the_right(self):
+        got = ocr._rtl_words("مشروب متساوي", (0, 0, 120, 30))
+        self.assertEqual([t for t, _ in got], ["مشروب", "متساوي"])
+        self.assertEqual(got[0][1], (70.0, 0.0, 120.0, 30.0))
+        self.assertEqual(got[1][1], (0.0, 0.0, 60.0, 30.0))

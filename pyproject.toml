@@ -12,6 +12,7 @@ dependencies = [
   "psycopg[binary]>=3.2",
   "spylls>=0.1.7",
   "lingua-language-detector>=2.0",
+  "tesserocr>=2.13.0",
 ]
 
 [tool.uv]

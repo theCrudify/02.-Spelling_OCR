@@ -1200,6 +1200,7 @@ dependencies = [
     { name = "psd-tools" },
     { name = "psycopg", extra = ["binary"] },
     { name = "spylls" },
+    { name = "tesserocr" },
 ]
 
 [package.metadata]
@@ -1212,6 +1213,7 @@ requires-dist = [
     { name = "psd-tools", specifier = ">=1.10" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2" },
     { name = "spylls", specifier = ">=0.1.7" },
+    { name = "tesserocr", specifier = ">=2.13.0" },
 ]
 
 [[package]]
@@ -1221,6 +1223,20 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/5c/c2/19f34deb2dc1475dfeadafbd5666246041ee7578bb933e82de794f0a9283/spylls-0.1.7.tar.gz", hash = "sha256:7045892dcbd324d3685f69c5a760063e78fb839913724ce18077cf0a0c93f220", size = 1499693, upload-time = "2022-01-23T13:26:54.032Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cd/19/ce6fcb4b86e188983bcfc1f84e4ac6f3038ca8d68b6d70a678cdc566f66c/spylls-0.1.7-py2.py3-none-any.whl", hash = "sha256:0c7fa4b66615f390bd12fd37939b85934c012309fd3cce8584844c54270b7776", size = 1509482, upload-time = "2022-01-23T13:26:40.203Z" },
+]
+
+[[package]]
+name = "tesserocr"
+version = "2.13.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8c/c5/be11a18c29f43369a3db8f418de81f98ca467783ddf8affadfacc16459fd/tesserocr-2.13.0.tar.gz", hash = "sha256:475460f736e5ac23dfcfbd414435581fa6eb0e849e80c816da2ff1b4af7d88ed", size = 80098, upload-time = "2026-11-12T09:45:24.88Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ee/3e/6c7008897d6b7f06a8bde309ee6250ca36746f80a178549496a7bcfca3fd/tesserocr-2.13.0-cp312-cp312-macosx_15_0_arm64.whl", hash = "sha256:9a172c4ec8d2eca0236bac569c8355a11b7210e34b3bc41c0d9874b9b3b19b8f", size = 3629834, upload-time = "2026-11-12T09:43:52.249Z" },
+    { url = "https://files.pythonhosted.org/packages/1a/de/6977e09718eae17f03e8dd2a3ef68e7da01a8556b57a8cc3706372f5bc0e/tesserocr-2.13.0-cp312-cp312-macosx_15_0_x86_64.whl", hash = "sha256:26c4a95bc2d269fa3db4ebdea0c985e7d153cefd7715f0e749924f0d51d14bb6", size = 4098504, upload-time = "2026-11-12T09:43:54.084Z" },
+    { url = "https://files.pythonhosted.org/packages/34/2e/ba8df464e8f5a022ab36a5ad6936200ea2226976c74e99b046c048b53c77/tesserocr-2.13.0-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:b62bb5394e20cd94973c22d263750d03a14d5ed154989d76c095b710433c0683", size = 5272623, upload-time = "2026-11-12T09:43:55.928Z" },
+    { url = "https://files.pythonhosted.org/packages/81/1f/b856cc14973005ed41680bc1a9709a6c2ce5bff8eb9cead7bf3b365154f8/tesserocr-2.13.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:a3e260356d153c080b1af169ea5858a3abfe71c86765b0aea32251295183dceb", size = 5601202, upload-time = "2026-11-12T09:43:58.224Z" },
+    { url = "https://files.pythonhosted.org/packages/20/ed/028e8a7f9862f13597e38da2db639c277a361b91d9a2e9bb6222248ba5d9/tesserocr-2.13.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:c694c0be5be0f7f68a10b4499eefd66b49b8424a405606eaa636c8a14282a93d", size = 6959342, upload-time = "2026-11-12T09:44:00.119Z" },
+    { url = "https://files.pythonhosted.org/packages/29/85/a830f1af6c24f8bf11d6ef6c650a8b4bd4536af2a93f1f082489189dd1b7/tesserocr-2.13.0-cp312-cp312-win_amd64.whl", hash = "sha256:2659f0ebd5b203e976a738140e1f9ccb25bb22cb672aa6a6efb809ae348551fd", size = 23168383, upload-time = "2026-11-12T09:44:03.99Z" },
 ]
 
 [[package]]

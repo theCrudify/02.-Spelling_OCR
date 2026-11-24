@@ -1,10 +1,10 @@
 {
  "total": {
-  "tokens": 519,
-  "missed": 10,
-  "extra": 10
+  "tokens": 562,
+  "missed": 0,
+  "extra": 0
  },
- "accuracy": 0.9614643545279383,
+ "accuracy": 1.0,
  "cases": {
   "latin_clean": {
    "tokens": 34,
@@ -12,7 +12,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 6.5
+   "seconds": 7.2
   },
   "large_title": {
    "tokens": 5,
@@ -20,7 +20,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 3.4
+   "seconds": 3.9
   },
   "numbers_units": {
    "tokens": 47,
@@ -28,7 +28,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 4.3
+   "seconds": 4.9
   },
   "small_print_a4": {
    "tokens": 88,
@@ -36,7 +36,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 25.3
+   "seconds": 27.7
   },
   "colored_backgrounds": {
    "tokens": 44,
@@ -44,7 +44,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 6.7
+   "seconds": 7.4
   },
   "photo_degraded": {
    "tokens": 55,
@@ -52,7 +52,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 6.5
+   "seconds": 6.9
   },
   "rotated_4_ways": {
    "tokens": 16,
@@ -64,33 +64,19 @@
   },
   "vietnamese": {
    "tokens": 22,
-   "missed": 10,
-   "extra": 10,
-   "missed_list": [
-    "bảo",
-    "bổ",
-    "chất",
-    "giải",
-    "nước",
-    "nước",
-    "quản",
-    "thể",
-    "uống",
-    "điện"
-   ],
-   "extra_list": [
-    "b",
-    "bo",
-    "cht",
-    "gii",
-    "nưc",
-    "nưc",
-    "qun",
-    "th",
-    "ung",
-    "đin"
-   ],
-   "seconds": 1.0
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 1.2
+  },
+  "mixed_id_vi": {
+   "tokens": 43,
+   "missed": 0,
+   "extra": 0,
+   "missed_list": [],
+   "extra_list": [],
+   "seconds": 4.5
   },
   "arabic": {
    "tokens": 18,
@@ -98,7 +84,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 1.2
+   "seconds": 1.1
   },
   "thai": {
    "tokens": 82,
@@ -106,7 +92,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 1.4
+   "seconds": 1.2
   },
   "chinese": {
    "tokens": 27,
@@ -114,7 +100,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 0.8
+   "seconds": 0.7
   },
   "japanese": {
    "tokens": 35,
@@ -122,7 +108,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 1.2
+   "seconds": 0.8
   },
   "vertical_chinese": {
    "tokens": 15,
@@ -130,7 +116,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 4.4
+   "seconds": 4.8
   },
   "mixed_id_en_ar": {
    "tokens": 31,
@@ -138,7 +124,7 @@
    "extra": 0,
    "missed_list": [],
    "extra_list": [],
-   "seconds": 6.1
+   "seconds": 6.8
   }
  }
 }

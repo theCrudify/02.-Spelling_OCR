@@ -113,6 +113,7 @@ def cases():
     im, t = rotated()
     out["rotated_4_ways"] = (im, t, ["id"], True)
     out["vietnamese"] = (page([("sans", 36, VI)], size=(1900, 200)), VI, ["vi"], False)
+    out["mixed_id_vi"] = (page([("sans", 34, ID), ("sans", 34, VI), ("sans", 34, ID2)], size=(1900, 300)), f"{ID} {VI} {ID2}", ["id", "vi"], False)
     out["arabic"] = (page([("ar", 48, AR), ("ar", 48, AR2)], size=(1500, 300)), f"{AR} {AR2}", ["ar"], False)
     out["thai"] = (page([("th", 44, TH), ("th", 44, TH2)], size=(1700, 300)), f"{TH} {TH2}", ["th"], False)
     out["chinese"] = (page([("cjk", 48, ZH)], size=(1700, 200)), ZH, ["zh"], False)
